@@ -94,29 +94,29 @@ def train(hps):
 
             def after_run(self, run_context, run_values):
                 train_step = run_values.results
-                if train_step < 5000:
+                if train_step < 1000:
                     self._lrn_rate = 0.1
-                elif train_step < 15000:
+                elif train_step < 2000:
                     self._lrn_rate = 0.07
-                elif train_step < 20000:
+                elif train_step < 3000:
                     self._lrn_rate = 0.05
-                elif train_step < 30000:
+                elif train_step < 4000:
                     self._lrn_rate = 0.01
-                elif train_step < 45000:
+                elif train_step < 5000:
                     self._lrn_rate = 0.008
-                elif train_step < 50000:
+                elif train_step < 6000:
                     self._lrn_rate = 0.006
-                elif train_step < 60000:
+                elif train_step < 7000:
                     self._lrn_rate = 0.005
-                elif train_step < 70000:
+                elif train_step < 10000:
                     self._lrn_rate = 0.004
-                elif train_step < 80000:
+                elif train_step < 20000:
                     self._lrn_rate = 0.003
-                elif train_step < 90000:
+                elif train_step < 30000:
                     self._lrn_rate = 0.002
-                elif train_step < 100000:
+                elif train_step < 40000:
                     self._lrn_rate = 0.001
-                elif train_step < 110000:
+                elif train_step < 100000:
                     self._lrn_rate = 0.0009
                 elif train_step < 115000:
                     self._lrn_rate = 0.0008
