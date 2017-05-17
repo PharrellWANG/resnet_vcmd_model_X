@@ -41,8 +41,8 @@ class ResNet(object):
         """ResNet constructor.
     
         Args:
-          hps: Hyperparameters.
-          images: Batches of images. [batch_size, image_size, image_size, 3]
+          hps: Hyper parameters.
+          images: Batches of images. [batch_size, image_size, image_size, 1]
           labels: Batches of labels. [batch_size, num_classes]
           mode: One of 'train' and 'eval'.
         """
@@ -70,6 +70,7 @@ class ResNet(object):
         with tf.variable_scope('init'):
             x = self._images
             x = self._conv('init_conv', x, 3, 1, 16, self._stride_arr(1))
+            # def _conv(self, name, x, filter_size, in_filters(rgb->3, luma->1), out_filters, strides):
 
         strides = [1, 2, 2]
         activate_before_residual = [True, False, False]

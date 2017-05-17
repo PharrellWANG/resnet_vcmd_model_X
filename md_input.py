@@ -118,7 +118,7 @@ def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes
     #     coord.join(threads)
 
     # Display the training image in the visualizer.
-    tf.summary.image('images', images)
+    tf.summary.image('images', images, 500)
     return images, labels
 
 # build_input()
