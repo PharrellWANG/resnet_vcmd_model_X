@@ -20,6 +20,7 @@ import six
 import sys
 
 import md_input
+import math
 import numpy as np
 import md_resnet_model
 import tensorflow as tf
@@ -94,14 +95,28 @@ def train(hps):
 
             def after_run(self, run_context, run_values):
                 train_step = run_values.results
-                if train_step < 20000:
-                    self._lrn_rate = 0.1
-                elif train_step < 60000:
-                    self._lrn_rate = 0.01
-                elif train_step < 80000:
-                    self._lrn_rate = 0.001
-                else:
-                    self._lrn_rate = 0.0001
+                # 1e4 0.154
+                # 2e4 0.07915
+                # 4e4 0.0209
+                # 6e4 0.00559
+                # 8e4 0.0015
+                max_learning_rate = 0.3
+                min_learning_rate = 0.0001
+                decay_speed = 15000
+                learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(-train_step/decay_speed)
+
+                self._lrn_rate = learning_rate
+
+                # if train_step < 20000:
+                #     self._lrn_rate = 0.1
+                # elif train_step < 40000:
+                #     self._lrn_rate = 0.05
+                # elif train_step < 60000:
+                #     self._lrn_rate = 0.01
+                # elif train_step < 80000:
+                #     self._lrn_rate = 0.001
+                # else:
+                #     self._lrn_rate = 0.0001
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=FLAGS.log_root,

@@ -84,7 +84,7 @@ class ResNet(object):
             # It is more memory efficient than very deep residual network and has
             # comparably good performance.
             # https://arxiv.org/pdf/1605.07146v1.pdf
-            filters = [16, 80, 160, 320]
+            filters = [16, 120, 240, 480]
             # Update hps.num_residual_units to 4
 
         with tf.variable_scope('unit_1_0'):
