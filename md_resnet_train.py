@@ -85,7 +85,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.05
+                self._lrn_rate = 0.1
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -94,14 +94,12 @@ def train(hps):
 
             def after_run(self, run_context, run_values):
                 train_step = run_values.results
-                if train_step < 18000:
-                    self._lrn_rate = 0.05
-                elif train_step < 30000:
+                if train_step < 20000:
+                    self._lrn_rate = 0.1
+                elif train_step < 60000:
                     self._lrn_rate = 0.01
-                elif train_step < 50000:
+                elif train_step < 80000:
                     self._lrn_rate = 0.001
-                elif train_step < 100000:
-                    self._lrn_rate = 0.0005
                 else:
                     self._lrn_rate = 0.0001
 
@@ -120,8 +118,8 @@ def train(hps):
 def main(_):
     hps = md_resnet_model.HParams(batch_size=100,
                                   num_classes=37,
-                                  min_lrn_rate=0.000001,
-                                  lrn_rate=0.001,
+                                  min_lrn_rate=0.0001,
+                                  lrn_rate=0.1,
                                   # num_residual_units=5,
                                   num_residual_units=4,
                                   use_bottleneck=False,

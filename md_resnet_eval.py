@@ -38,7 +38,7 @@ tf.app.flags.DEFINE_string('train_dir',
                            'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 10,
+tf.app.flags.DEFINE_integer('eval_batch_count', 50,
                             'Number of batches to eval.')
 tf.app.flags.DEFINE_bool('eval_once', False,
                          'Whether evaluate the model only once.')
