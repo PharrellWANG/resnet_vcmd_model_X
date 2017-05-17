@@ -29,7 +29,7 @@ import six
 from tensorflow.python.training import moving_averages
 
 HParams = namedtuple('HParams',
-                     'batch_size, num_classes, min_lrn_rate, lrn_rate, '
+                     'batch_size, num_classes, lrn_rate, '
                      'num_residual_units, use_bottleneck, weight_decay_rate, '
                      'relu_leakiness, optimizer')
 

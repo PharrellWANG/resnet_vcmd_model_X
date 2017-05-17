@@ -1,19 +1,4 @@
-# Copyright 2016 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-
-"""ResNet Train/Eval module.
+"""ResNet Train module.
 """
 import time
 import six
@@ -86,7 +71,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.1
+                self._lrn_rate = 0.3
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -103,7 +88,8 @@ def train(hps):
                 max_learning_rate = 0.3
                 min_learning_rate = 0.0001
                 decay_speed = 15000
-                learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(-train_step/decay_speed)
+                learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(
+                    -train_step / decay_speed)
 
                 self._lrn_rate = learning_rate
 
@@ -133,8 +119,7 @@ def train(hps):
 def main(_):
     hps = md_resnet_model.HParams(batch_size=100,
                                   num_classes=37,
-                                  min_lrn_rate=0.0001,
-                                  lrn_rate=0.1,
+                                  lrn_rate=0.3,
                                   # num_residual_units=5,
                                   num_residual_units=4,
                                   use_bottleneck=False,

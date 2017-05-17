@@ -1,23 +1,7 @@
-# Copyright 2016 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-
-"""ResNet Train/Eval module.
+"""ResNet Eval module.
 """
 import time
 import six
-import sys
 
 import md_input
 import numpy as np
@@ -25,20 +9,19 @@ import md_resnet_model
 import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
-# tf.app.flags.DEFINE_string('dataset', 'cifar10', 'cifar10 or cifar100.')
 tf.app.flags.DEFINE_string('mode', 'eval', 'train or eval.')
 tf.app.flags.DEFINE_string('train_data_path',
                            '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32_equal.csv',
-                           'Filepattern for training data.')
+                           'File pattern for training data.')
 tf.app.flags.DEFINE_string('eval_data_path',
                            '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv',
-                           'Filepattern for eval data')
+                           'File pattern for eval data')
 tf.app.flags.DEFINE_string('train_dir',
                            '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/train',
                            'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 100,
+tf.app.flags.DEFINE_integer('eval_batch_count', 50,
                             'Number of batches to eval.')
 tf.app.flags.DEFINE_bool('eval_once', False,
                          'Whether evaluate the model only once.')
@@ -102,14 +85,13 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            time.sleep(240)
+            time.sleep(300)
 
 
 def main(_):
     hps = md_resnet_model.HParams(batch_size=100,
                                   num_classes=37,
-                                  min_lrn_rate=0.00001,
-                                  lrn_rate=0.1,
+                                  lrn_rate=0.3,
                                   # num_residual_units=5,
                                   num_residual_units=4,
                                   use_bottleneck=False,

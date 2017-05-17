@@ -1,22 +1,8 @@
-# Copyright 2017 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-
 """md dataset input module.
 """
 
 import tensorflow as tf
+
 data_path_x = '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv'
 
 
@@ -66,7 +52,6 @@ def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes
     # print('===================')
     # print(image.shape)
     # print(label.shape)
-    # image = image.astype(np.float32)
     # image = np.multiply(image, 1.0 / 255.0)
 
     if mode == 'train':
