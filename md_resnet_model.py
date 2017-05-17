@@ -83,7 +83,7 @@ class ResNet(object):
             # It is more memory efficient than very deep residual network and has
             # comparably good performance.
             # https://arxiv.org/pdf/1605.07146v1.pdf
-            filters = [16, 80, 160, 320]
+            filters = [16, 120, 240, 480]
             # Update hps.num_residual_units to 4
 
         with tf.variable_scope('unit_1_0'):
@@ -110,6 +110,7 @@ class ResNet(object):
         with tf.variable_scope('unit_last'):
             x = self._batch_norm('final_bn', x)
             x = self._relu(x, self.hps.relu_leakiness)
+            x = self._dropout(x)
             x = self._global_avg_pool(x)
 
         with tf.variable_scope('logit'):
@@ -132,10 +133,10 @@ class ResNet(object):
         trainable_variables = tf.trainable_variables()
         grads = tf.gradients(self.cost, trainable_variables)
 
-        if self.hps.optimizer == 'sgd':
-            optimizer = tf.train.GradientDescentOptimizer(self.lrn_rate)
-        elif self.hps.optimizer == 'mom':
-            optimizer = tf.train.MomentumOptimizer(self.lrn_rate, 0.9)
+        # if self.hps.optimizer == 'sgd':
+        #     optimizer = tf.train.GradientDescentOptimizer(self.lrn_rate)
+        # elif self.hps.optimizer == 'mom':
+        optimizer = tf.train.MomentumOptimizer(self.lrn_rate, 0.9, use_nesterov=True)
 
         apply_op = optimizer.apply_gradients(
             zip(grads, trainable_variables),
@@ -197,12 +198,14 @@ class ResNet(object):
             with tf.variable_scope('shared_activation'):
                 x = self._batch_norm('init_bn', x)
                 x = self._relu(x, self.hps.relu_leakiness)
+                x = self._dropout(x)
                 orig_x = x
         else:
             with tf.variable_scope('residual_only_activation'):
                 orig_x = x
                 x = self._batch_norm('init_bn', x)
                 x = self._relu(x, self.hps.relu_leakiness)
+                x = self._dropout(x)
 
         with tf.variable_scope('sub1'):
             x = self._conv('conv1', x, 3, in_filter, out_filter, stride)
@@ -210,6 +213,7 @@ class ResNet(object):
         with tf.variable_scope('sub2'):
             x = self._batch_norm('bn2', x)
             x = self._relu(x, self.hps.relu_leakiness)
+            x = self._dropout(x)
             x = self._conv('conv2', x, 3, out_filter, out_filter, [1, 1, 1, 1])
 
         with tf.variable_scope('sub_add'):
@@ -230,12 +234,14 @@ class ResNet(object):
             with tf.variable_scope('common_bn_relu'):
                 x = self._batch_norm('init_bn', x)
                 x = self._relu(x, self.hps.relu_leakiness)
+                x = self._dropout(x)
                 orig_x = x
         else:
             with tf.variable_scope('residual_bn_relu'):
                 orig_x = x
                 x = self._batch_norm('init_bn', x)
                 x = self._relu(x, self.hps.relu_leakiness)
+                x = self._dropout(x)
 
         with tf.variable_scope('sub1'):
             x = self._conv('conv1', x, 1, in_filter, out_filter / 4, stride)
@@ -243,11 +249,13 @@ class ResNet(object):
         with tf.variable_scope('sub2'):
             x = self._batch_norm('bn2', x)
             x = self._relu(x, self.hps.relu_leakiness)
+            x = self._dropout(x)
             x = self._conv('conv2', x, 3, out_filter / 4, out_filter / 4, [1, 1, 1, 1])
 
         with tf.variable_scope('sub3'):
             x = self._batch_norm('bn3', x)
             x = self._relu(x, self.hps.relu_leakiness)
+            x = self._dropout(x)
             x = self._conv('conv3', x, 1, out_filter / 4, out_filter, [1, 1, 1, 1])
 
         with tf.variable_scope('sub_add'):
@@ -282,6 +290,18 @@ class ResNet(object):
         """Relu, with optional leaky support."""
         return tf.where(tf.less(x, 0.0), leakiness * x, x, name='leaky_relu')
 
+    def _dropout(self, x):
+        train_pkeep_conv = 0.75
+        eval_pkeep_conv = 1.0
+        if self.mode == 'train':
+            pkeep_conv = train_pkeep_conv
+        else:
+            pkeep_conv = eval_pkeep_conv
+
+        self._pkeep_conv = tf.constant(pkeep_conv, tf.float32)
+
+        return tf.nn.dropout(x, self._pkeep_conv, self._compatible_convolutional_noise_shape(x))
+
     def _fully_connected(self, x, out_dim):
         """FullyConnected layer for final output."""
         x = tf.reshape(x, [self.hps.batch_size, -1])
@@ -295,3 +315,8 @@ class ResNet(object):
     def _global_avg_pool(self, x):
         assert x.get_shape().ndims == 4
         return tf.reduce_mean(x, [1, 2])
+
+    def _compatible_convolutional_noise_shape(self, x):
+        noiseshape = tf.shape(self, x)
+        noiseshape = noiseshape * tf.constant([1, 0, 0, 1]) + tf.constant([0, 1, 1, 0])
+        return noiseshape
