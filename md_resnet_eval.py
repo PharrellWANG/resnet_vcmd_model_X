@@ -21,7 +21,7 @@ tf.app.flags.DEFINE_string('train_dir',
                            'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 50,
+tf.app.flags.DEFINE_integer('eval_batch_count', 10,
                             'Number of batches to eval.')
 tf.app.flags.DEFINE_bool('eval_once', False,
                          'Whether evaluate the model only once.')
@@ -38,8 +38,12 @@ def evaluate(hps):
         model.build_graph()
         saver = tf.train.Saver()
         summary_writer = tf.summary.FileWriter(FLAGS.eval_dir)
+        config = tf.ConfigProto(
+            device_count={'GPU': 0}
+        )
+        sess = tf.Session(config=config)
 
-        sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
+        # sess = tf.Session(config=tf.ConfigProto(device_count={'GPU': 0}))
         tf.train.start_queue_runners(sess)
 
         best_precision = 0.0
@@ -85,7 +89,7 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            time.sleep(300)
+            time.sleep(600)
 
 
 def main(_):

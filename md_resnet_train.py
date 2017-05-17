@@ -71,7 +71,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.3
+                self._lrn_rate = 0.5
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -85,9 +85,9 @@ def train(hps):
                 # 4e4 0.0209
                 # 6e4 0.00559
                 # 8e4 0.0015
-                max_learning_rate = 0.3
+                max_learning_rate = 0.5
                 min_learning_rate = 0.0001
-                decay_speed = 15000
+                decay_speed = 10000
                 learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(
                     -train_step / decay_speed)
 
