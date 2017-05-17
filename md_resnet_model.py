@@ -300,7 +300,7 @@ class ResNet(object):
 
         self._pkeep_conv = tf.constant(pkeep_conv, tf.float32)
 
-        return tf.nn.dropout(x, self._pkeep_conv, self._compatible_convolutional_noise_shape(x))
+        return tf.nn.dropout(x, self._pkeep_conv)
 
     def _fully_connected(self, x, out_dim):
         """FullyConnected layer for final output."""
@@ -316,7 +316,11 @@ class ResNet(object):
         assert x.get_shape().ndims == 4
         return tf.reduce_mean(x, [1, 2])
 
-    def _compatible_convolutional_noise_shape(self, x):
-        noiseshape = tf.shape(self, x)
-        noiseshape = noiseshape * tf.constant([1, 0, 0, 1]) + tf.constant([0, 1, 1, 0])
-        return noiseshape
+    # def _compatible_convolutional_noise_shape(self, x):
+    #     print(x)
+    #     print(x.shape())
+    #
+    #     noiseshape = x
+    #
+    #     noiseshape = noiseshape * tf.constant([1, 0, 0, 1]) + tf.constant([0, 1, 1, 0])
+    #     return noiseshape
