@@ -71,7 +71,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.1
+                self._lrn_rate = 0.05
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -96,11 +96,11 @@ def train(hps):
                 if train_step < 200000:
                     self._lrn_rate = 0.01
                 elif train_step < 600000:
-                    self._lrn_rate = 0.005
-                elif train_step < 800000:
                     self._lrn_rate = 0.001
-                elif train_step < 1000000:
+                elif train_step < 800000:
                     self._lrn_rate = 0.0001
+                elif train_step < 1000000:
+                    self._lrn_rate = 0.00005
                 elif train_step < 1500000:
                     self._lrn_rate = 0.00001
                 # elif train_step < 80000:
