@@ -23,7 +23,7 @@ tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/res
                            'Directory to keep eval outputs.')
 tf.app.flags.DEFINE_integer('eval_batch_count', 10,
                             'Number of batches to eval.')
-tf.app.flags.DEFINE_bool('eval_once', False,
+tf.app.flags.DEFINE_bool('eval_once', True,
                          'Whether evaluate the model only once.')
 tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model',
                            'Directory to keep the checkpoints. Should be a '
@@ -60,6 +60,7 @@ def evaluate(hps):
             saver.restore(sess, ckpt_state.model_checkpoint_path)
 
             total_prediction, correct_prediction = 0, 0
+            start = time.time()
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
@@ -85,6 +86,10 @@ def evaluate(hps):
             tf.logging.info('loss: %.3f, precision: %.3f, best precision: %.3f' %
                             (loss, precision, best_precision))
             summary_writer.flush()
+
+            elapsed_time = time.time() - start
+            print('total prediction: ' + str(total_prediction))
+            print('single time spent for each prediction: ' + str(elapsed_time/float(total_prediction)))
 
             if FLAGS.eval_once:
                 break

@@ -71,7 +71,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.5
+                self._lrn_rate = 0.1
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -85,24 +85,28 @@ def train(hps):
                 # 4e4 0.0209
                 # 6e4 0.00559
                 # 8e4 0.0015
-                max_learning_rate = 0.5
-                min_learning_rate = 0.0001
-                decay_speed = 10000
-                learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(
-                    -train_step / decay_speed)
+                # max_learning_rate = 0.5
+                # min_learning_rate = 0.000001
+                # decay_speed = 10000
+                # learning_rate = min_learning_rate + (max_learning_rate - min_learning_rate) * math.exp(
+                #     -train_step / decay_speed)
+                #
+                # self._lrn_rate = learning_rate
 
-                self._lrn_rate = learning_rate
-
-                # if train_step < 20000:
-                #     self._lrn_rate = 0.1
-                # elif train_step < 40000:
-                #     self._lrn_rate = 0.05
-                # elif train_step < 60000:
-                #     self._lrn_rate = 0.01
+                if train_step < 200000:
+                    self._lrn_rate = 0.01
+                elif train_step < 600000:
+                    self._lrn_rate = 0.005
+                elif train_step < 800000:
+                    self._lrn_rate = 0.001
+                elif train_step < 1000000:
+                    self._lrn_rate = 0.0001
+                elif train_step < 1500000:
+                    self._lrn_rate = 0.00001
                 # elif train_step < 80000:
                 #     self._lrn_rate = 0.001
-                # else:
-                #     self._lrn_rate = 0.0001
+                else:
+                    self._lrn_rate = 0.000005
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=FLAGS.log_root,
