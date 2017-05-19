@@ -71,7 +71,7 @@ def train(hps):
             """Sets learning_rate based on global step."""
 
             def begin(self):
-                self._lrn_rate = 0.05
+                self._lrn_rate = 0.1
 
             def before_run(self, run_context):
                 return tf.train.SessionRunArgs(
@@ -92,21 +92,73 @@ def train(hps):
                 #     -train_step / decay_speed)
                 #
                 # self._lrn_rate = learning_rate
-
-                if train_step < 200000:
-                    self._lrn_rate = 0.01
-                elif train_step < 600000:
-                    self._lrn_rate = 0.001
-                elif train_step < 800000:
-                    self._lrn_rate = 0.0001
-                elif train_step < 1000000:
-                    self._lrn_rate = 0.00005
-                elif train_step < 1500000:
-                    self._lrn_rate = 0.00001
-                # elif train_step < 80000:
+#-----------------------------------------------------------------
+                # if train_step < 5000:
+                #     self._lrn_rate = 0.01
+                # elif train_step < 15000:
                 #     self._lrn_rate = 0.001
+                # elif train_step < 40000:
+                #     self._lrn_rate = 0.0005
+                # elif train_step < 60000:
+                #     self._lrn_rate = 0.0001
+                # elif train_step < 80000:
+                #     self._lrn_rate = 0.00001
+                # # elif train_step < 80000:
+                # #     self._lrn_rate = 0.001
+                # else:
+                #     self._lrn_rate = 0.000005
+# -----------------------------------------------------------------
+                if train_step < 5000:
+                    self._lrn_rate = 0.1
+                elif train_step < 15000:
+                    self._lrn_rate = 0.09
+                elif train_step < 20000:
+                    self._lrn_rate = 0.08
+                elif train_step < 30000:
+                    self._lrn_rate = 0.06
+                elif train_step < 45000:
+                    self._lrn_rate = 0.05
+                elif train_step < 50000:
+                    self._lrn_rate = 0.04
+                elif train_step < 60000:
+                    self._lrn_rate = 0.03
+                elif train_step < 70000:
+                    self._lrn_rate = 0.01
+                elif train_step < 80000:
+                    self._lrn_rate = 0.008
+                elif train_step < 90000:
+                    self._lrn_rate = 0.005
+                elif train_step < 100000:
+                    self._lrn_rate = 0.001
+                elif train_step < 110000:
+                    self._lrn_rate = 0.0009
+                elif train_step < 120000:
+                    self._lrn_rate = 0.0008
+                elif train_step < 130000:
+                    self._lrn_rate = 0.0007
+                elif train_step < 140000:
+                    self._lrn_rate = 0.0006
+                elif train_step < 150000:
+                    self._lrn_rate = 0.0005
+                elif train_step < 160000:
+                    self._lrn_rate = 0.0004
+                elif train_step < 170000:
+                    self._lrn_rate = 0.0003
+                elif train_step < 180000:
+                    self._lrn_rate = 0.0002
+                elif train_step < 190000:
+                    self._lrn_rate = 0.0001
+                elif train_step < 200000:
+                    self._lrn_rate = 0.00009
+                elif train_step < 210000:
+                    self._lrn_rate = 0.00008
+                elif train_step < 220000:
+                    self._lrn_rate = 0.00005
+                elif train_step < 250000:
+                    self._lrn_rate = 0.00003
                 else:
-                    self._lrn_rate = 0.000005
+                    self._lrn_rate = 0.00001
+
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=FLAGS.log_root,
@@ -121,7 +173,7 @@ def train(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=100,
+    hps = md_resnet_model.HParams(batch_size=64,
                                   num_classes=37,
                                   lrn_rate=0.3,
                                   # num_residual_units=5,
