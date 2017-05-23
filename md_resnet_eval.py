@@ -94,7 +94,7 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            time.sleep(600)
+            time.sleep(1800)
 
 
 def main(_):

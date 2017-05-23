@@ -159,6 +159,39 @@ def train(hps):
                 else:
                     self._lrn_rate = 0.00001
 
+                # # ------------
+                # if train_step < 5000:
+                #     self._lrn_rate = 0.1
+                # elif train_step < 15000:
+                #     self._lrn_rate = 0.07
+                # elif train_step < 20000:
+                #     self._lrn_rate = 0.05
+                # elif train_step < 30000:
+                #     self._lrn_rate = 0.01
+                # elif train_step < 45000:
+                #     self._lrn_rate = 0.008
+                # elif train_step < 50000:
+                #     self._lrn_rate = 0.006
+                # elif train_step < 60000:
+                #     self._lrn_rate = 0.005
+                # elif train_step < 70000:
+                #     self._lrn_rate = 0.004
+                # elif train_step < 80000:
+                #     self._lrn_rate = 0.003
+                # elif train_step < 90000:
+                #     self._lrn_rate = 0.002
+                # elif train_step < 100000:
+                #     self._lrn_rate = 0.001
+                # elif train_step < 110000:
+                #     self._lrn_rate = 0.0009
+                # elif train_step < 130000:
+                #     self._lrn_rate = 0.0008
+                # elif train_step < 140000:
+                #     self._lrn_rate = 0.0003
+                # elif train_step < 150000:
+                #     self._lrn_rate = 0.0002
+                # else:
+                #     self._lrn_rate = 0.0001
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=FLAGS.log_root,
