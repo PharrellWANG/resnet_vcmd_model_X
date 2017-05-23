@@ -21,7 +21,7 @@ tf.app.flags.DEFINE_string('train_dir',
                            'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 10,
+tf.app.flags.DEFINE_integer('eval_batch_count', 120,
                             'Number of batches to eval.')
 tf.app.flags.DEFINE_bool('eval_once', True,
                          'Whether evaluate the model only once.')
@@ -61,6 +61,7 @@ def evaluate(hps):
 
             total_prediction, correct_prediction = 0, 0
             start = time.time()
+            x37x37x = np.zeros((37, 37))
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
@@ -68,9 +69,30 @@ def evaluate(hps):
 
                 truth = np.argmax(truth, axis=1)
                 predictions = np.argmax(predictions, axis=1)
+
+                for idx in range(100):
+                    row = truth[idx]
+                    col = predictions[idx]
+                    x37x37x[row, col] += 1
+                    # print('index:  ' + str(idx) + '     correct_label: ' + str(row) + '     prediction: ' + str(col) +
+                    #       '     x37x37x[' + str(row) + ', ' + str(col) + '] = ' + str(x37x37x[row, col]))
+
+                # print('truth: ' + str(truth) + '     prediction: ' + str(predictions))
+
                 correct_prediction += np.sum(truth == predictions)
                 total_prediction += predictions.shape[0]
 
+            for row in range(37):
+                print('---------------')
+                print('mode : ' + str(row))
+                print('----------')
+                for col in range(37):
+                    if x37x37x[row, col] != 0.0:
+                        print('mode: ' + str(row) + ' --->    number of predictions in mode ' + str(col) + ' :  ' + str(
+                            x37x37x[row, col]))
+
+            np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/_x37x37x_.csv", x37x37x, fmt='%i',
+                       delimiter=",")
             precision = 1.0 * correct_prediction / total_prediction
             best_precision = max(precision, best_precision)
 
@@ -89,7 +111,7 @@ def evaluate(hps):
 
             elapsed_time = time.time() - start
             print('total prediction: ' + str(total_prediction))
-            print('single time spent for each prediction: ' + str(elapsed_time/float(total_prediction)))
+            print('single time spent for each prediction: ' + str(elapsed_time / float(total_prediction)))
 
             if FLAGS.eval_once:
                 break

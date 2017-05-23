@@ -108,90 +108,92 @@ def train(hps):
                 # else:
                 #     self._lrn_rate = 0.000005
 # -----------------------------------------------------------------
+            # lr used with 16, 160, 320, 640
+
+#                 if train_step < 5000:
+#                     self._lrn_rate = 0.1
+#                 elif train_step < 15000:
+#                     self._lrn_rate = 0.09
+#                 elif train_step < 20000:
+#                     self._lrn_rate = 0.08
+#                 elif train_step < 30000:
+#                     self._lrn_rate = 0.06
+#                 elif train_step < 45000:
+#                     self._lrn_rate = 0.05
+#                 elif train_step < 50000:
+#                     self._lrn_rate = 0.04
+#                 elif train_step < 60000:
+#                     self._lrn_rate = 0.03
+#                 elif train_step < 70000:
+#                     self._lrn_rate = 0.01
+#                 elif train_step < 80000:
+#                     self._lrn_rate = 0.008
+#                 elif train_step < 90000:
+#                     self._lrn_rate = 0.005
+#                 elif train_step < 100000:
+#                     self._lrn_rate = 0.001
+#                 elif train_step < 110000:
+#                     self._lrn_rate = 0.0009
+#                 elif train_step < 120000:
+#                     self._lrn_rate = 0.0008
+#                 elif train_step < 130000:
+#                     self._lrn_rate = 0.0007
+#                 elif train_step < 140000:
+#                     self._lrn_rate = 0.0006
+#                 elif train_step < 150000:
+#                     self._lrn_rate = 0.0005
+#                 elif train_step < 160000:
+#                     self._lrn_rate = 0.0004
+#                 elif train_step < 170000:
+#                     self._lrn_rate = 0.0003
+#                 elif train_step < 180000:
+#                     self._lrn_rate = 0.0002
+#                 elif train_step < 190000:
+#                     self._lrn_rate = 0.0001
+#                 elif train_step < 200000:
+#                     self._lrn_rate = 0.00009
+#                 elif train_step < 210000:
+#                     self._lrn_rate = 0.00008
+#                 elif train_step < 220000:
+#                     self._lrn_rate = 0.00005
+#                 elif train_step < 250000:
+#                     self._lrn_rate = 0.00003
+#                 else:
+#                     self._lrn_rate = 0.00001
+
+                # # ------------
                 if train_step < 5000:
                     self._lrn_rate = 0.1
                 elif train_step < 15000:
-                    self._lrn_rate = 0.09
+                    self._lrn_rate = 0.07
                 elif train_step < 20000:
-                    self._lrn_rate = 0.08
-                elif train_step < 30000:
-                    self._lrn_rate = 0.06
-                elif train_step < 45000:
                     self._lrn_rate = 0.05
-                elif train_step < 50000:
-                    self._lrn_rate = 0.04
-                elif train_step < 60000:
-                    self._lrn_rate = 0.03
-                elif train_step < 70000:
+                elif train_step < 30000:
                     self._lrn_rate = 0.01
-                elif train_step < 80000:
+                elif train_step < 45000:
                     self._lrn_rate = 0.008
-                elif train_step < 90000:
+                elif train_step < 50000:
+                    self._lrn_rate = 0.006
+                elif train_step < 60000:
                     self._lrn_rate = 0.005
+                elif train_step < 70000:
+                    self._lrn_rate = 0.004
+                elif train_step < 80000:
+                    self._lrn_rate = 0.003
+                elif train_step < 90000:
+                    self._lrn_rate = 0.002
                 elif train_step < 100000:
                     self._lrn_rate = 0.001
                 elif train_step < 110000:
                     self._lrn_rate = 0.0009
-                elif train_step < 120000:
-                    self._lrn_rate = 0.0008
                 elif train_step < 130000:
-                    self._lrn_rate = 0.0007
+                    self._lrn_rate = 0.0008
                 elif train_step < 140000:
-                    self._lrn_rate = 0.0006
-                elif train_step < 150000:
-                    self._lrn_rate = 0.0005
-                elif train_step < 160000:
-                    self._lrn_rate = 0.0004
-                elif train_step < 170000:
                     self._lrn_rate = 0.0003
-                elif train_step < 180000:
+                elif train_step < 150000:
                     self._lrn_rate = 0.0002
-                elif train_step < 190000:
-                    self._lrn_rate = 0.0001
-                elif train_step < 200000:
-                    self._lrn_rate = 0.00009
-                elif train_step < 210000:
-                    self._lrn_rate = 0.00008
-                elif train_step < 220000:
-                    self._lrn_rate = 0.00005
-                elif train_step < 250000:
-                    self._lrn_rate = 0.00003
                 else:
-                    self._lrn_rate = 0.00001
-
-                # # ------------
-                # if train_step < 5000:
-                #     self._lrn_rate = 0.1
-                # elif train_step < 15000:
-                #     self._lrn_rate = 0.07
-                # elif train_step < 20000:
-                #     self._lrn_rate = 0.05
-                # elif train_step < 30000:
-                #     self._lrn_rate = 0.01
-                # elif train_step < 45000:
-                #     self._lrn_rate = 0.008
-                # elif train_step < 50000:
-                #     self._lrn_rate = 0.006
-                # elif train_step < 60000:
-                #     self._lrn_rate = 0.005
-                # elif train_step < 70000:
-                #     self._lrn_rate = 0.004
-                # elif train_step < 80000:
-                #     self._lrn_rate = 0.003
-                # elif train_step < 90000:
-                #     self._lrn_rate = 0.002
-                # elif train_step < 100000:
-                #     self._lrn_rate = 0.001
-                # elif train_step < 110000:
-                #     self._lrn_rate = 0.0009
-                # elif train_step < 130000:
-                #     self._lrn_rate = 0.0008
-                # elif train_step < 140000:
-                #     self._lrn_rate = 0.0003
-                # elif train_step < 150000:
-                #     self._lrn_rate = 0.0002
-                # else:
-                #     self._lrn_rate = 0.0001
+                    self._lrn_rate = 0.0001
 
         with tf.train.MonitoredTrainingSession(
                 checkpoint_dir=FLAGS.log_root,
@@ -206,14 +208,14 @@ def train(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=64,
+    hps = md_resnet_model.HParams(batch_size=128,
                                   num_classes=37,
-                                  lrn_rate=0.3,
+                                  lrn_rate=0.1,
                                   # num_residual_units=5,
                                   num_residual_units=4,
                                   use_bottleneck=False,
                                   weight_decay_rate=0.0002,
-                                  relu_leakiness=0.1,
+                                  relu_leakiness=0.0,
                                   optimizer='mom')
     train(hps)
 
