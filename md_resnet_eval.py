@@ -11,7 +11,7 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'eval', 'train or eval.')
 tf.app.flags.DEFINE_string('train_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32_equal.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32.csv',
                            'File pattern for training data.')
 tf.app.flags.DEFINE_string('eval_data_path',
                            '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv',
@@ -21,7 +21,7 @@ tf.app.flags.DEFINE_string('train_dir',
                            'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 120,
+tf.app.flags.DEFINE_integer('eval_batch_count', 1776,
                             'Number of batches to eval.')
 tf.app.flags.DEFINE_bool('eval_once', True,
                          'Whether evaluate the model only once.')
@@ -48,6 +48,7 @@ def evaluate(hps):
 
         best_precision = 0.0
         while True:
+            time.sleep(2000)
             try:
                 ckpt_state = tf.train.get_checkpoint_state(FLAGS.log_root)
             except tf.errors.OutOfRangeError as e:
@@ -70,7 +71,7 @@ def evaluate(hps):
                 truth = np.argmax(truth, axis=1)
                 predictions = np.argmax(predictions, axis=1)
 
-                for idx in range(100):
+                for idx in range(hps.batch_size):
                     row = truth[idx]
                     col = predictions[idx]
                     x37x37x[row, col] += 1
@@ -116,11 +117,11 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            time.sleep(1800)
+            # time.sleep(2000)
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=100,
+    hps = md_resnet_model.HParams(batch_size=10,
                                   num_classes=37,
                                   lrn_rate=0.3,
                                   # num_residual_units=5,

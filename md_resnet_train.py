@@ -202,7 +202,7 @@ def train(hps):
                 # Since we provide a SummarySaverHook, we need to disable default
                 # SummarySaverHook. To do that we set save_summaries_steps to 0.
                 save_summaries_steps=0,
-                config=tf.ConfigProto(log_device_placement=True, allow_soft_placement=True, )) as mon_sess:
+                config=tf.ConfigProto(allow_soft_placement=True, )) as mon_sess:
             while not mon_sess.should_stop():
                 mon_sess.run(model.train_op)
 
