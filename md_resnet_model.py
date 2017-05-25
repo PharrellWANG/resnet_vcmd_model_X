@@ -69,7 +69,7 @@ class ResNet(object):
         """Build the core model within the graph."""
         with tf.variable_scope('init'):
             x = self._images
-            x = self._conv('init_conv', x, 3, 1, 60, self._stride_arr(1))
+            x = self._conv('init_conv', x, 3, 1, 16, self._stride_arr(1))
 
         strides = [1, 2, 2]
         activate_before_residual = [True, False, False]
@@ -78,12 +78,12 @@ class ResNet(object):
             filters = [16, 64, 128, 256]
         else:
             res_func = self._residual
-            # filters = [16, 16, 32, 64]
+            filters = [16, 16, 32, 64]
             # Uncomment the following codes to use w28-10 wide residual network.
             # It is more memory efficient than very deep residual network and has
             # comparably good performance.
             # https://arxiv.org/pdf/1605.07146v1.pdf
-            filters = [60, 60, 120, 240]
+            # filters = [60, 60, 120, 240]
             # filters = [16, 80, 160, 320]
             # filters = [16, 160, 320, 640]
             # Update hps.num_residual_units to 4

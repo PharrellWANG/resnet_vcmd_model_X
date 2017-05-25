@@ -6,7 +6,7 @@ import tensorflow as tf
 data_path_x = '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv'
 
 
-def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes=37):
+def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes=35):
     """Build md image and labels.
   
     Args:

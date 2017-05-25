@@ -10,15 +10,9 @@ import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'eval', 'train or eval.')
-tf.app.flags.DEFINE_string('train_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32.csv',
-                           'File pattern for training data.')
 tf.app.flags.DEFINE_string('eval_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32_texture_only.csv',
                            'File pattern for eval data')
-tf.app.flags.DEFINE_string('train_dir',
-                           '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/train',
-                           'Directory to keep training outputs.')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
 tf.app.flags.DEFINE_integer('eval_batch_count', 1776,
@@ -48,7 +42,7 @@ def evaluate(hps):
 
         best_precision = 0.0
         while True:
-            time.sleep(2000)
+            # time.sleep(2000)
             try:
                 ckpt_state = tf.train.get_checkpoint_state(FLAGS.log_root)
             except tf.errors.OutOfRangeError as e:
@@ -62,7 +56,7 @@ def evaluate(hps):
 
             total_prediction, correct_prediction = 0, 0
             start = time.time()
-            x37x37x = np.zeros((37, 37))
+            x35x35x = np.zeros((35, 35))
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
@@ -74,25 +68,26 @@ def evaluate(hps):
                 for idx in range(hps.batch_size):
                     row = truth[idx]
                     col = predictions[idx]
-                    x37x37x[row, col] += 1
+                    x35x35x[row, col] += 1
                     # print('index:  ' + str(idx) + '     correct_label: ' + str(row) + '     prediction: ' + str(col) +
-                    #       '     x37x37x[' + str(row) + ', ' + str(col) + '] = ' + str(x37x37x[row, col]))
+                    #       '     x35x35x[' + str(row) + ', ' + str(col) + '] = ' + str(x35x35x[row, col]))
 
                 # print('truth: ' + str(truth) + '     prediction: ' + str(predictions))
 
                 correct_prediction += np.sum(truth == predictions)
                 total_prediction += predictions.shape[0]
 
-            for row in range(37):
+            for row in range(35):
                 print('---------------')
                 print('mode : ' + str(row))
                 print('----------')
-                for col in range(37):
-                    if x37x37x[row, col] != 0.0:
+                for col in range(35):
+                    if x35x35x[row, col] != 0.0:
                         print('mode: ' + str(row) + ' --->    number of predictions in mode ' + str(col) + ' :  ' + str(
-                            x37x37x[row, col]))
+                            x35x35x[row, col]))
 
-            np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/_x37x37x_.csv", x37x37x, fmt='%i',
+            np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/classification_distribution"
+                       "/texture_x35x35x__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x35x35x, fmt='%i',
                        delimiter=",")
             precision = 1.0 * correct_prediction / total_prediction
             best_precision = max(precision, best_precision)
@@ -117,15 +112,15 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            # time.sleep(2000)
+            time.sleep(900)
 
 
 def main(_):
     hps = md_resnet_model.HParams(batch_size=10,
-                                  num_classes=37,
+                                  num_classes=35,
                                   lrn_rate=0.3,
-                                  # num_residual_units=5,
-                                  num_residual_units=4,
+                                  num_residual_units=5,
+                                  # num_residual_units=4,
                                   use_bottleneck=False,
                                   weight_decay_rate=0.0002,
                                   relu_leakiness=0.1,

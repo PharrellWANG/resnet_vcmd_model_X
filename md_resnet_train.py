@@ -11,23 +11,13 @@ import md_resnet_model
 import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
-# tf.app.flags.DEFINE_string('dataset', 'cifar10', 'cifar10 or cifar100.')
 tf.app.flags.DEFINE_string('mode', 'train', 'train or eval.')
 tf.app.flags.DEFINE_string('train_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32_equal.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32_texture_only.csv',
                            'Filepattern for training data.')
-tf.app.flags.DEFINE_string('eval_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv',
-                           'Filepattern for eval data')
 tf.app.flags.DEFINE_string('train_dir',
                            '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/train',
                            'Directory to keep training outputs.')
-tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
-                           'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 50,
-                            'Number of batches to eval.')
-tf.app.flags.DEFINE_bool('eval_once', False,
-                         'Whether evaluate the model only once.')
 tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model',
                            'Directory to keep the checkpoints. Should be a '
                            'parent directory of FLAGS.train_dir/eval_dir.')
@@ -208,11 +198,11 @@ def train(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=128,
-                                  num_classes=37,
+    hps = md_resnet_model.HParams(batch_size=256,
+                                  num_classes=35,
                                   lrn_rate=0.1,
-                                  # num_residual_units=5,
-                                  num_residual_units=4,
+                                  num_residual_units=5,
+                                  # num_residual_units=4,
                                   use_bottleneck=False,
                                   weight_decay_rate=0.0002,
                                   relu_leakiness=0.0,
