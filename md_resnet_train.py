@@ -13,7 +13,7 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'train', 'train or eval.')
 tf.app.flags.DEFINE_string('train_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/training_32x32_texture_only.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/33_angular_modes_train_0-32.csv',
                            'Filepattern for training data.')
 tf.app.flags.DEFINE_string('train_dir',
                            '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/train',
@@ -199,7 +199,7 @@ def train(hps):
 
 def main(_):
     hps = md_resnet_model.HParams(batch_size=256,
-                                  num_classes=35,
+                                  num_classes=33,
                                   lrn_rate=0.1,
                                   num_residual_units=5,
                                   # num_residual_units=4,

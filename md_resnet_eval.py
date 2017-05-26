@@ -11,13 +11,14 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'eval', 'train or eval.')
 tf.app.flags.DEFINE_string('eval_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32_texture_only.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/33_angular_modes_test_0-32.csv',
                            'File pattern for eval data')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 1776,
+tf.app.flags.DEFINE_integer('eval_batch_count', 128,
                             'Number of batches to eval.')
-tf.app.flags.DEFINE_bool('eval_once', True,
+# 1776, batch 10
+tf.app.flags.DEFINE_bool('eval_once', False,
                          'Whether evaluate the model only once.')
 tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model',
                            'Directory to keep the checkpoints. Should be a '
@@ -56,7 +57,7 @@ def evaluate(hps):
 
             total_prediction, correct_prediction = 0, 0
             start = time.time()
-            x35x35x = np.zeros((35, 35))
+            x33x33x = np.zeros((33, 33))
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
@@ -68,26 +69,26 @@ def evaluate(hps):
                 for idx in range(hps.batch_size):
                     row = truth[idx]
                     col = predictions[idx]
-                    x35x35x[row, col] += 1
+                    x33x33x[row, col] += 1
                     # print('index:  ' + str(idx) + '     correct_label: ' + str(row) + '     prediction: ' + str(col) +
-                    #       '     x35x35x[' + str(row) + ', ' + str(col) + '] = ' + str(x35x35x[row, col]))
+                    #       '     x33x33x[' + str(row) + ', ' + str(col) + '] = ' + str(x33x33x[row, col]))
 
                 # print('truth: ' + str(truth) + '     prediction: ' + str(predictions))
 
                 correct_prediction += np.sum(truth == predictions)
                 total_prediction += predictions.shape[0]
 
-            for row in range(35):
+            for row in range(33):
                 print('---------------')
                 print('mode : ' + str(row))
                 print('----------')
-                for col in range(35):
-                    if x35x35x[row, col] != 0.0:
+                for col in range(33):
+                    if x33x33x[row, col] != 0.0:
                         print('mode: ' + str(row) + ' --->    number of predictions in mode ' + str(col) + ' :  ' + str(
-                            x35x35x[row, col]))
+                            x33x33x[row, col]))
 
             np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/classification_distribution"
-                       "/texture_x35x35x__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x35x35x, fmt='%i',
+                       "/texture_x33x33x__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x33x33x, fmt='%i',
                        delimiter=",")
             precision = 1.0 * correct_prediction / total_prediction
             best_precision = max(precision, best_precision)
@@ -112,12 +113,12 @@ def evaluate(hps):
             if FLAGS.eval_once:
                 break
 
-            time.sleep(900)
+            time.sleep(1200)
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=10,
-                                  num_classes=35,
+    hps = md_resnet_model.HParams(batch_size=100,
+                                  num_classes=33,
                                   lrn_rate=0.3,
                                   num_residual_units=5,
                                   # num_residual_units=4,
