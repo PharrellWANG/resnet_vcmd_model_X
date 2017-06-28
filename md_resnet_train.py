@@ -13,12 +13,12 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'train', 'train or eval.')
 tf.app.flags.DEFINE_string('train_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/train_data_32x32/33_angular_modes_train_0-32.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/fdc-tf-data-preprocessing/train_data/training_data_16x16.csv',
                            'Filepattern for training data.')
 tf.app.flags.DEFINE_string('train_dir',
-                           '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/train',
+                           '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL/train',
                            'Directory to keep training outputs.')
-tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model',
+tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL',
                            'Directory to keep the checkpoints. Should be a '
                            'parent directory of FLAGS.train_dir/eval_dir.')
 
@@ -42,6 +42,22 @@ def train(hps):
             tfprof_options=tf.contrib.tfprof.model_analyzer.FLOAT_OPS_OPTIONS)
 
         truth = tf.argmax(model.labels, axis=1)
+
+        ##########################################
+        # all_predictions = np.squeeze(model.predictions)
+        # print(type(all_predictions))
+        # print(all_predictions)
+        #
+        # top_k = all_predictions.argsort()[-3:]
+        # print('=============')
+        # print(len(top_k))
+        # total_score = 0
+        # for node_id in top_k:
+        #     score = all_predictions[node_id]
+        #     total_score += score
+        #     print('===========~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  Mode %s (score = %.5f)' % (node_id, score))
+        ##########################################
+
         predictions = tf.argmax(model.predictions, axis=1)
         precision = tf.reduce_mean(tf.to_float(tf.equal(predictions, truth)))
 
@@ -49,7 +65,8 @@ def train(hps):
             save_steps=100,
             output_dir=FLAGS.train_dir,
             summary_op=tf.summary.merge([model.summaries,
-                                         tf.summary.scalar('Precision', precision)]))
+                                         tf.summary.scalar('Precision', precision),
+                                         ]))
 
         logging_hook = tf.train.LoggingTensorHook(
             tensors={'step': model.global_step,
@@ -198,8 +215,8 @@ def train(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=256,
-                                  num_classes=33,
+    hps = md_resnet_model.HParams(batch_size=100,
+                                  num_classes=37,
                                   lrn_rate=0.1,
                                   num_residual_units=5,
                                   # num_residual_units=4,

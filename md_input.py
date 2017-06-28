@@ -6,7 +6,7 @@ import tensorflow as tf
 data_path_x = '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/testing_32x32.csv'
 
 
-def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes=35):
+def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes=37):
     """Build md image and labels.
   
     Args:
@@ -22,7 +22,7 @@ def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes
     Raises:
       ValueError: when the specified dataset is not supported.
     """
-    image_size = 32
+    image_size = 16
     num_classes = num_classes
 
     depth = 1
@@ -35,12 +35,12 @@ def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes
     # Default values, in case of empty columns. Also specifies the type of the
     # decoded result.
 
-    record_defaults = [[1] for _ in range(1026)]
+    record_defaults = [[1] for _ in range(257)]
 
-    list_of_1024plus2_columns = tf.decode_csv(value, record_defaults=record_defaults)
+    list_of_256plus1_columns = tf.decode_csv(value, record_defaults=record_defaults)
 
-    image = tf.stack(list_of_1024plus2_columns[1:len(list_of_1024plus2_columns) - 1])
-    label = tf.stack(list_of_1024plus2_columns[len(list_of_1024plus2_columns) - 1])
+    image = tf.stack(list_of_256plus1_columns[0:len(list_of_256plus1_columns) - 1])
+    label = tf.stack(list_of_256plus1_columns[len(list_of_256plus1_columns) - 1])
 
     depth_major = tf.reshape(image,
                              [depth, image_size, image_size])
@@ -103,7 +103,7 @@ def build_input(data_path=data_path_x, batch_size=100, mode='train', num_classes
     #     coord.join(threads)
 
     # Display the training image in the visualizer.
-    tf.summary.image('images', images, 500)
+    tf.summary.image('images', images, 10)
     return images, labels
 
 # build_input()

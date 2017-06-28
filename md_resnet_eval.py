@@ -11,16 +11,16 @@ import tensorflow as tf
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('mode', 'eval', 'train or eval.')
 tf.app.flags.DEFINE_string('eval_data_path',
-                           '/Users/Pharrell_WANG/PycharmProjects/vcmd_data_prepare/test_data_32x32/33_angular_modes_test_0-32.csv',
+                           '/Users/Pharrell_WANG/PycharmProjects/fdc-tf-data-preprocessing/validate_data/validating_data_16x16.csv',
                            'File pattern for eval data')
-tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model/eval',
+tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 128,
+tf.app.flags.DEFINE_integer('eval_batch_count', 1,
                             'Number of batches to eval.')
 # 1776, batch 10
 tf.app.flags.DEFINE_bool('eval_once', False,
                          'Whether evaluate the model only once.')
-tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/32x32_wrn_model',
+tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL',
                            'Directory to keep the checkpoints. Should be a '
                            'parent directory of FLAGS.train_dir/eval_dir.')
 
@@ -57,11 +57,27 @@ def evaluate(hps):
 
             total_prediction, correct_prediction = 0, 0
             start = time.time()
-            x33x33x = np.zeros((33, 33))
+            x37_angularx37_angularx = np.zeros((37, 37))
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
                      model.labels, model.global_step])
+
+                # predictions = np.squeeze(predictions)
+                #
+                # top_k = predictions.argsort()[-5:][::-1]
+                # total_score = 0
+                # for node_id in top_k:
+                #     score = predictions[node_id]
+                #     total_score += score
+                #     print('===========~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                #     print('Mode %s (score = %.5f)' % (node_id, score))
+                #     print('')
+                # ##########################################
+                # top_5_precision_summ = tf.Summary()
+                # top_5_precision_summ.value.add(
+                #     tag='eval_Top_5_Precision', simple_value=total_score)
+                # ##########################################
 
                 truth = np.argmax(truth, axis=1)
                 predictions = np.argmax(predictions, axis=1)
@@ -69,29 +85,31 @@ def evaluate(hps):
                 for idx in range(hps.batch_size):
                     row = truth[idx]
                     col = predictions[idx]
-                    x33x33x[row, col] += 1
+                    x37_angularx37_angularx[row, col] += 1
                     # print('index:  ' + str(idx) + '     correct_label: ' + str(row) + '     prediction: ' + str(col) +
-                    #       '     x33x33x[' + str(row) + ', ' + str(col) + '] = ' + str(x33x33x[row, col]))
+                    #       '     x37_angularx37_angularx[' + str(row) + ', ' + str(col) + '] = ' + str(x37_angularx37_angularx[row, col]))
 
                 # print('truth: ' + str(truth) + '     prediction: ' + str(predictions))
 
                 correct_prediction += np.sum(truth == predictions)
                 total_prediction += predictions.shape[0]
 
-            for row in range(33):
+            for row in range(37):
                 print('---------------')
                 print('mode : ' + str(row))
                 print('----------')
-                for col in range(33):
-                    if x33x33x[row, col] != 0.0:
+                for col in range(37):
+                    if x37_angularx37_angularx[row, col] != 0.0:
                         print('mode: ' + str(row) + ' --->    number of predictions in mode ' + str(col) + ' :  ' + str(
-                            x33x33x[row, col]))
+                            x37_angularx37_angularx[row, col]))
 
             np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/classification_distribution"
-                       "/texture_x33x33x__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x33x33x, fmt='%i',
+                       "/all_intra_37x37__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x37_angularx37_angularx, fmt='%i',
                        delimiter=",")
             precision = 1.0 * correct_prediction / total_prediction
             best_precision = max(precision, best_precision)
+
+
 
             precision_summ = tf.Summary()
             precision_summ.value.add(
@@ -117,8 +135,8 @@ def evaluate(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=100,
-                                  num_classes=33,
+    hps = md_resnet_model.HParams(batch_size=1000,
+                                  num_classes=2,
                                   lrn_rate=0.3,
                                   num_residual_units=5,
                                   # num_residual_units=4,
