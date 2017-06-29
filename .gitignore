@@ -2,64 +2,7 @@
 .gitignore
 .idea/workspace.xml
 32x32_wrn_model/
-classification_distribution/texture_x2_angularx2_angularx__ .ckpt-2043.csv
-classification_distribution/texture_x2_angularx2_angularx__ .ckpt-6103.csv
-classification_distribution/texture_x2_angularx2_angularx__ ckpt-10160.csv
-classification_distribution/texture_x2_angularx2_angularx__ ckpt-16240.csv
-classification_distribution/texture_x2_angularx2_angularx__ ckpt-20295.csv
-classification_distribution/texture_x2_angularx2_angularx__ del.ckpt-1.csv
-classification_distribution/texture_x4x4x__ .ckpt-3519.csv
-classification_distribution/texture_x4x4x__ .ckpt-6985.csv
-classification_distribution/texture_x4x4x__ ckpt-10459.csv
-classification_distribution/texture_x4x4x__ ckpt-13927.csv
-classification_distribution/texture_x4x4x__ ckpt-17400.csv
-classification_distribution/texture_x4x4x__ ckpt-20869.csv
-classification_distribution/texture_x4x4x__ ckpt-24338.csv
-classification_distribution/texture_x4x4x__ ckpt-31264.csv
-classification_distribution/texture_x4x4x__ ckpt-34733.csv
-classification_distribution/texture_x4x4x__ ckpt-38205.csv
-classification_distribution/texture_x4x4x__ ckpt-41678.csv
-classification_distribution/texture_x4x4x__ ckpt-45151.csv
-classification_distribution/texture_x4x4x__ ckpt-52076.csv
-classification_distribution/texture_x4x4x__ ckpt-55549.csv
-classification_distribution/texture_x4x4x__ ckpt-59025.csv
-classification_distribution/texture_x4x4x__ ckpt-62499.csv
-classification_distribution/texture_x4x4x__ ckpt-65972.csv
-classification_distribution/texture_x4x4x__ ckpt-69445.csv
-classification_distribution/texture_x4x4x__ ckpt-76372.csv
-classification_distribution/texture_x4x4x__ ckpt-79848.csv
-classification_distribution/texture_x4x4x__ ckpt-83315.csv
-classification_distribution/texture_x4x4x__ ckpt-86788.csv
-classification_distribution/texture_x4x4x__ ckpt-90259.csv
-classification_distribution/texture_x4x4x__ ckpt-97199.csv
-classification_distribution/texture_x4x4x__ del.ckpt-1.csv
-classification_distribution/texture_x4x4x__ kpt-100664.csv
-classification_distribution/texture_x4x4x__ kpt-104142.csv
-classification_distribution/texture_x4x4x__ kpt-107615.csv
-classification_distribution/texture_x4x4x__ kpt-111090.csv
-classification_distribution/texture_x4x4x__ kpt-114561.csv
-classification_distribution/texture_x4x4x__ kpt-121489.csv
-classification_distribution/texture_x4x4x__ kpt-124966.csv
-classification_distribution/texture_x4x4x__ kpt-128438.csv
-classification_distribution/texture_x4x4x__ kpt-131915.csv
-classification_distribution/texture_x4x4x__ kpt-135389.csv
-classification_distribution/texture_x4x4x__ kpt-138862.csv
-classification_distribution/texture_x4x4x__ kpt-145788.csv
-classification_distribution/texture_x4x4x__ kpt-149262.csv
-classification_distribution/texture_x4x4x__ kpt-152738.csv
-classification_distribution/texture_x4x4x__ kpt-156216.csv
-classification_distribution/texture_x4x4x__ kpt-159689.csv
-classification_distribution/texture_x4x4x__ kpt-166637.csv
-classification_distribution/texture_x4x4x__ kpt-170101.csv
-classification_distribution/texture_x4x4x__ kpt-173573.csv
-classification_distribution/texture_x4x4x__ kpt-177049.csv
-classification_distribution/texture_x4x4x__ kpt-180524.csv
-classification_distribution/texture_x4x4x__ kpt-183998.csv
-classification_distribution/texture_x4x4x__ kpt-190926.csv
-classification_distribution/texture_x4x4x__ kpt-194400.csv
-classification_distribution/texture_x4x4x__ kpt-197878.csv
-classification_distribution/texture_x4x4x__ kpt-201353.csv
-classification_distribution/texture_x4x4x__ kpt-204805.csv
 /16X16_RESNET_MODEL/
-16X16_RESNET_MODEL/
 __pycache__/
+/classification_distribution/
+/classification_distribution_history/

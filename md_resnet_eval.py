@@ -15,7 +15,7 @@ tf.app.flags.DEFINE_string('eval_data_path',
                            'File pattern for eval data')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 1,
+tf.app.flags.DEFINE_integer('eval_batch_count', 200,
                             'Number of batches to eval.')
 # 1776, batch 10
 tf.app.flags.DEFINE_bool('eval_once', False,
@@ -136,7 +136,7 @@ def evaluate(hps):
 
 def main(_):
     hps = md_resnet_model.HParams(batch_size=1000,
-                                  num_classes=2,
+                                  num_classes=37,
                                   lrn_rate=0.3,
                                   num_residual_units=5,
                                   # num_residual_units=4,
