@@ -3,7 +3,7 @@
 import time
 import six
 
-import md_input
+import md_input, cifar_input
 import numpy as np
 import md_resnet_model
 import tensorflow as tf
@@ -15,7 +15,7 @@ tf.app.flags.DEFINE_string('eval_data_path',
                            'File pattern for eval data')
 tf.app.flags.DEFINE_string('eval_dir', '/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/16X16_RESNET_MODEL/eval',
                            'Directory to keep eval outputs.')
-tf.app.flags.DEFINE_integer('eval_batch_count', 200,
+tf.app.flags.DEFINE_integer('eval_batch_count', 50,
                             'Number of batches to eval.')
 # 1776, batch 10
 tf.app.flags.DEFINE_bool('eval_once', False,
@@ -28,7 +28,10 @@ tf.app.flags.DEFINE_string('log_root', '/Users/Pharrell_WANG/PycharmProjects/res
 def evaluate(hps):
     """Eval loop."""
     with tf.device('/cpu:0'):
-        images, labels = md_input.build_input(FLAGS.eval_data_path, hps.batch_size, FLAGS.mode, hps.num_classes)
+        images, labels = cifar_input.build_input('cifar10',
+                                                 '/Users/Pharrell_WANG/RESNET/cifar10/test_batch.bin',
+                                                 100,
+                                                 'eval')
         model = md_resnet_model.ResNet(hps, images, labels, FLAGS.mode)
         model.build_graph()
         saver = tf.train.Saver()
@@ -57,7 +60,7 @@ def evaluate(hps):
 
             total_prediction, correct_prediction = 0, 0
             start = time.time()
-            x37_angularx37_angularx = np.zeros((37, 37))
+            x10_angularx10_angularx = np.zeros((10, 10))
             for _ in six.moves.range(FLAGS.eval_batch_count):
                 (summaries, loss, predictions, truth, train_step) = sess.run(
                     [model.summaries, model.cost, model.predictions,
@@ -85,26 +88,26 @@ def evaluate(hps):
                 for idx in range(hps.batch_size):
                     row = truth[idx]
                     col = predictions[idx]
-                    x37_angularx37_angularx[row, col] += 1
+                    x10_angularx10_angularx[row, col] += 1
                     # print('index:  ' + str(idx) + '     correct_label: ' + str(row) + '     prediction: ' + str(col) +
-                    #       '     x37_angularx37_angularx[' + str(row) + ', ' + str(col) + '] = ' + str(x37_angularx37_angularx[row, col]))
+                    #       '     x10_angularx10_angularx[' + str(row) + ', ' + str(col) + '] = ' + str(x10_angularx10_angularx[row, col]))
 
                 # print('truth: ' + str(truth) + '     prediction: ' + str(predictions))
 
                 correct_prediction += np.sum(truth == predictions)
                 total_prediction += predictions.shape[0]
 
-            for row in range(37):
+            for row in range(10):
                 print('---------------')
                 print('mode : ' + str(row))
                 print('----------')
-                for col in range(37):
-                    if x37_angularx37_angularx[row, col] != 0.0:
+                for col in range(10):
+                    if x10_angularx10_angularx[row, col] != 0.0:
                         print('mode: ' + str(row) + ' --->    number of predictions in mode ' + str(col) + ' :  ' + str(
-                            x37_angularx37_angularx[row, col]))
+                            x10_angularx10_angularx[row, col]))
 
             np.savetxt("/Users/Pharrell_WANG/PycharmProjects/resnet_vcmd_model_X/classification_distribution"
-                       "/all_intra_37x37__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x37_angularx37_angularx, fmt='%i',
+                       "/cifar_10x10__ "+ str(ckpt_state.model_checkpoint_path)[-10:] + ".csv", x10_angularx10_angularx, fmt='%i',
                        delimiter=",")
             precision = 1.0 * correct_prediction / total_prediction
             best_precision = max(precision, best_precision)
@@ -135,8 +138,8 @@ def evaluate(hps):
 
 
 def main(_):
-    hps = md_resnet_model.HParams(batch_size=1000,
-                                  num_classes=37,
+    hps = md_resnet_model.HParams(batch_size=100,
+                                  num_classes=10,
                                   lrn_rate=0.3,
                                   num_residual_units=5,
                                   # num_residual_units=4,

@@ -20,6 +20,7 @@ import tensorflow as tf
 
 
 def build_input(dataset, data_path, batch_size, mode):
+    #data_path=data_path_x, batch_size=100, mode='train', num_classes=37
     """Build CIFAR image and labels.
   
     Args:

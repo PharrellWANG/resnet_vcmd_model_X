@@ -69,7 +69,7 @@ class ResNet(object):
         """Build the core model within the graph."""
         with tf.variable_scope('init'):
             x = self._images
-            x = self._conv('init_conv', x, 3, 1, 16, self._stride_arr(1))
+            x = self._conv('init_conv', x, 3, 3, 16, self._stride_arr(1))
 
         strides = [1, 2, 2]
         activate_before_residual = [True, False, False]
